@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gofile - Free File Sharing and Storage</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #0f172a;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Gofile Logo Header Styling */
+        .gofile-logo-wrapper {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gofile-svg {
+            height: 60px;
+            width: auto;
+        }
+
+        .card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 32px 24px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .icon {
+            width: 64px;
+            height: 64px;
+            background-color: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .icon svg {
+            width: 32px;
+            height: 32px;
+            fill: #ffffff;
+        }
+        h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        p {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        
+        /* PLAY BUTTON STYLE */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background-color: #2563eb;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 16px 0;
+            border: none;
+            border-radius: 30px; /* Rounded pill style tulad ng mga media play button */
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+            transition: all 0.2s ease;
+        }
+        .btn:hover:not(:disabled) {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+        }
+        .btn:disabled {
+            background-color: #475569;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 14px solid #ffffff;
+            display: inline-block;
+            margin-left: 2px;
+        }
+
+        .notice {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Built-in Gofile Logo -->
+    <div class="gofile-logo-wrapper">
+        <svg class="gofile-svg" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
+            <path d="M40 22 L85 22 M30 38 L75 38 M20 54 L65 54 M50 14 L95 14" stroke="#e5e7eb" stroke-width="4" stroke-linecap="round"/>
+            <path d="M25 45 L70 45 M15 61 L60 61" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+            <polygon points="90,12 125,12 135,22 135,50 90,50" fill="#e5e7eb"/>
+            <polygon points="80,28 102,28 108,35 138,35 130,65 72,65" fill="#f59e0b"/>
+            <text x="145" y="55" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="44">
+                <tspan fill="#3b82f6">Go</tspan><tspan fill="#cbd5e1">File</tspan>
+            </text>
+        </svg>
+    </div>
+
+    <div class="card">
+        <div class="icon">
+            <svg viewBox="0 0 24 24">
+                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+            </svg>
+        </div>
+        <h1 id="mainTitle">Link Ready</h1>
+        <p id="subText">Tap the button below to continue to Gofile.</p>
+        
+        <!-- Play Button Style -->
+        <button id="continueBtn" class="btn">
+            <span class="play-icon" id="btnIcon"></span>
+            <span id="btnText">Continue to Gofile</span>
+        </button>
+
+        <p class="notice">Support us by allowing the sponsor tab to open.</p>
+    </div>
+
+    <!-- Hidden anchor trigger para sa affiliate tracking -->
+    <a id="affiliateAnchor" href="https://egovph.s.gy/SGofile" target="_blank" rel="noopener noreferrer" style="display:none;"></a>
+
+    <script>
+        document.getElementById("continueBtn").addEventListener("click", function() {
+            var btn = this;
+            var btnText = document.getElementById("btnText");
+            var btnIcon = document.getElementById("btnIcon");
+            var subText = document.getElementById("subText");
+            var anchor = document.getElementById("affiliateAnchor");
+
+            btn.disabled = true;
+            btnIcon.style.display = "none"; // Itatago ang play icon habang nag-re-redirect
+            btnText.innerText = "Redirecting...";
+            subText.innerText = "Opening sponsor page & preparing your file...";
+
+            // Trigger hidden link
+            anchor.click();
+
+            // 600ms delay bago pumunta sa Gofile destination
+            setTimeout(function() {
+                btnText.innerText = "Opening Gofile...";
+                window.location.href = "https://gofile.io/d/Qhnvibso"; 
+            }, 600);
+        });
+    </script>
+
+</body>
+</html>
